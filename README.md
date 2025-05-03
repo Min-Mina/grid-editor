@@ -16,7 +16,7 @@ A Python GUI app for drawing, resizing, moving, and managing non-overlapping rec
 ## 🚀 Getting Started
 
 1. Clone this repo or download the Windows app:
-   📥 [Download grid-editor_v1.0.exe](https://github.com/Min-Mina/grid-editor/releases/download/v1.0/grid-editor.exe)
+   📥 [Download grid-editor_v1.0.exe](https://github.com/Min-Mina/grid-editor/releases/download/v1.0/grid-editor_v1.0.exe)
 2. Run the app and start creating your grid layout!
 
 ## 🖱️ Usage
