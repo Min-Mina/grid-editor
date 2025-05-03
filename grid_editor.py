@@ -13,7 +13,7 @@ def isOverlap(rect1, rect2):
 class grid_editor:
     def __init__(self, canvas, app):
         self.canvas = canvas
-        self.app = app  #Store the app instance for accessing width_entry, height_entry
+        self.app = app  #接收width_entry, height_entry
         self.grid = [] #record grid's id
         self.handlers = {}
         self.startx = 0
