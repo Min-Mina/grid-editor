@@ -3,14 +3,39 @@ from grid_editor import grid_editor
 
 class MyApp:
     def __init__(self, root):
-        self.canvas = tk.Canvas(root, width=1358, height=686)
+        #建立主Canvas與兩個Scrollbar
+        self.main_canvas = tk.Canvas(root)
+        self.v_scrollbar = tk.Scrollbar(root, orient="vertical", command=self.main_canvas.yview)
+        self.h_scrollbar = tk.Scrollbar(root, orient="horizontal", command=self.main_canvas.xview)
+
+        self.main_canvas.configure(yscrollcommand=self.v_scrollbar.set, xscrollcommand=self.h_scrollbar.set)
+
+        self.v_scrollbar.pack(side="right", fill="y")
+        self.h_scrollbar.pack(side="bottom", fill="x")
+        self.main_canvas.pack(side="left", fill="both", expand=True)
+
+        #建立可捲動Frame
+        self.scrollable_frame = tk.Frame(self.main_canvas)
+
+        #把Frame放到Canvas裡
+        self.main_canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        #當scrollable_frame尺寸變動更新捲動區域邊界
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
+        )
+        #Canvas與背景圖
+        self.canvas = tk.Canvas(self.scrollable_frame, width=1358, height=686)
         self.background = tk.PhotoImage(file="image/image001.png")
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.background)
         self.canvas.pack()
 
+        #控制方格
         self.editor = grid_editor(self.canvas, self)
 
-        self.container = tk.Frame(root)
+        #底下工具列容器
+        self.container = tk.Frame(self.scrollable_frame)
         self.container.pack(fill='x')
 
         #設定欄位寬度配置
@@ -25,7 +50,6 @@ class MyApp:
         self.height_entry = tk.Entry(self.left_container, width=8)
         self.width_entry.insert(0, "width")
         self.height_entry.insert(0, "height")
-
         self.width_entry.pack(side='left', padx=2)
         self.height_entry.pack(side='left', padx=2)
 
@@ -48,10 +72,10 @@ class MyApp:
         self.del_btn.pack(side='left', padx=5, pady=5)
         self.save_btn.pack(side='left', padx=5, pady=5)
         self.load_btn.pack(side='left', padx=5, pady=5)
-        pass
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("assignment")
-    root.geometry("1358x730+10+10")
+    root.geometry("1380x750+10+10") 
     app = MyApp(root)
     root.mainloop()
