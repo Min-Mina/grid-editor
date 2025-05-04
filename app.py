@@ -14,36 +14,32 @@ class MyApp:
         self.h_scrollbar.pack(side="bottom", fill="x")
         self.main_canvas.pack(side="left", fill="both", expand=True)
 
-        #建立可捲動Frame
-        self.scrollable_frame = tk.Frame(self.main_canvas)
+        #Canvas與背景圖
+        self.canvas = tk.Canvas(self.main_canvas, width=1358, height=686) 
+        self.background = tk.PhotoImage(file="image/image001.png")
+        self.canvas.create_image(0, 0, anchor=tk.NW, image=self.background)
 
-        #把Frame放到Canvas裡
-        self.main_canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-
-        #當scrollable_frame尺寸變動更新捲動區域邊界
-        self.scrollable_frame.bind(
+        self.canvas.bind(
             "<Configure>",
             lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
         )
-        #Canvas與背景圖
-        self.canvas = tk.Canvas(self.scrollable_frame, width=1358, height=686)
-        self.background = tk.PhotoImage(file="image/image001.png")
-        self.canvas.create_image(0, 0, anchor=tk.NW, image=self.background)
-        self.canvas.pack()
+
+        self.main_canvas.create_window((0, 0), window=self.canvas, anchor='nw')#底圖加到main canvas
 
         #控制方格
         self.editor = grid_editor(self.canvas, self)
 
         #底下工具列容器
-        self.container = tk.Frame(self.scrollable_frame)
-        self.container.pack(fill='x')
+        self.container = tk.Frame(self.main_canvas) 
+        self.main_canvas.create_window((0, 0), window=self.container, anchor='s')#加到main canvas
+        self.container.pack(side='bottom', fill='x')
 
         #設定欄位寬度配置
         self.container.grid_columnconfigure(0, weight=4)
         self.container.grid_columnconfigure(1, weight=6)
 
         #左側：輸入 + Apply 按鈕
-        self.left_container = tk.Frame(self.container)
+        self.left_container = tk.Frame(self.container) 
         self.left_container.grid(row=0, column=0, sticky='w', padx=10)
 
         self.width_entry = tk.Entry(self.left_container, width=8)

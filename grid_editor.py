@@ -164,12 +164,12 @@ class grid_editor:
             width = int(self.app.width_entry.get())
             height = int(self.app.height_entry.get())
         except ValueError:
-            print("請輸入正確數字")
+            print("Please enter valid numbers")
             return
 
         grid = self.selectedGrid
         if grid is None:
-            print("未選取方格")
+            print("No square selected")
             return
 
         x1, y1, _, _ = self.canvas.coords(grid)
@@ -179,7 +179,7 @@ class grid_editor:
 
         #檢查邊界與重疊
         if x2 > 1358 or y2 > 686 or width < 20 or height < 20:
-            print("exceed")
+            print("exceed!")
             return
         for other in self.grid:
             if other != grid and isOverlap(new_coords, self.canvas.coords(other)):
